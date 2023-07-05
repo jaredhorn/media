@@ -281,8 +281,18 @@ p {
   padding: 100px 200px;
   line-height: 2;
 }
+.skills img {
+  display: block;
+  margin: auto;
+  width: 75px;
+}
 .skills {
   background: rgba(224, 214, 194, 0.67);
+}
+.profile img{
+  display: block;
+  margin: auto;
+  padding-right: 3%;
 }
 .profile {
   /* background: lightpink; */
@@ -370,15 +380,16 @@ p {
   .card {
           height: 360px;
   }
-
   .card h2 {
           font-size: 10px;
   }
-  .card img{height:250px;
+  .card img{
+          height:250px;
+  }
+  .skills, .profile {
+          padding: 100px 4%;
+  }
 
-
-
-}
 
 /* .project-btn{
         margin-left:95px;
