@@ -283,7 +283,8 @@ p {
 }
 .skills img {
   display: block;
-  margin: auto;
+  margin: 40px auto 0 auto;
+
   width: 75px;
 }
 .skills {
@@ -296,7 +297,8 @@ p {
 }
 .profile {
   /* background: lightpink; */
-  padding: 100px 400px;
+  padding: 100px 20%;
+  text-align: center;
   line-height: 2;
 }
 .contact-me {
