@@ -1,39 +1,33 @@
+(() => {
+  const year = document.getElementById('year');
+  if (year) year.textContent = String(new Date().getFullYear());
 
-// Smooth Scroll for Anchor Links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener("click", function (e) {
-    e.preventDefault();
-    document.querySelector(this.getAttribute("href")).scrollIntoView({
-      behavior: "smooth"
-    });
+  const dialog = document.getElementById('lightbox');
+  if (!dialog || !dialog.showModal) return;
+  const largeImage = dialog.querySelector('figure img');
+  const caption = dialog.querySelector('figcaption');
+  const items = [...document.querySelectorAll('.gallery-item')];
+  let current = 0;
+  let trigger = null;
+
+  function show(index) {
+    current = (index + items.length) % items.length;
+    const item = items[current];
+    largeImage.src = item.dataset.full;
+    largeImage.alt = item.dataset.alt;
+    caption.textContent = item.dataset.alt;
+  }
+  items.forEach((item, index) => item.addEventListener('click', () => {
+    trigger = item;
+    show(index);
+    dialog.showModal();
+  }));
+  dialog.querySelector('.lightbox-prev').addEventListener('click', () => show(current - 1));
+  dialog.querySelector('.lightbox-next').addEventListener('click', () => show(current + 1));
+  dialog.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft') { event.preventDefault(); show(current - 1); }
+    if (event.key === 'ArrowRight') { event.preventDefault(); show(current + 1); }
   });
-});
-
-// Lightbox for Image Grid
-document.querySelectorAll('.gg-box img').forEach(img => {
-  img.addEventListener('click', () => {
-    const overlay = document.createElement('div');
-    overlay.id = 'lightbox';
-    overlay.style.position = 'fixed';
-    overlay.style.top = 0;
-    overlay.style.left = 0;
-    overlay.style.width = '100vw';
-    overlay.style.height = '100vh';
-    overlay.style.background = 'rgba(0,0,0,0.8)';
-    overlay.style.display = 'flex';
-    overlay.style.alignItems = 'center';
-    overlay.style.justifyContent = 'center';
-    overlay.innerHTML = `<img src="${img.src}" style="max-width:90%; max-height:90%">`;
-    overlay.addEventListener('click', () => overlay.remove());
-    document.body.appendChild(overlay);
-  });
-});
-
-// Scroll Reveal using ScrollReveal.js (needs external lib)
-ScrollReveal().reveal('.card', {
-  distance: '30px',
-  duration: 800,
-  easing: 'ease-out',
-  origin: 'bottom',
-  interval: 100
-});
+  dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+  dialog.addEventListener('close', () => { largeImage.removeAttribute('src'); trigger?.focus(); });
+})();
